@@ -1,0 +1,82 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+
+
+/// <summary>
+/// Summary description for Class1
+/// </summary>
+namespace samp
+{
+
+    public class Logic
+    {
+        public DataSet getdataset(string strsql)
+        {
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+            SqlConnection con = new SqlConnection(constr);
+            SqlCommand cmd = new SqlCommand(strsql, con);
+
+            try
+            {
+                con.Open();
+                SqlDataAdapter ad = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                ad.Fill(ds);
+                return ds;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
+                cmd.Dispose();
+                con.Dispose();
+            }
+
+
+        }
+        public bool checkDataExist(string str)
+        {
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+            SqlConnection con = new SqlConnection(constr);
+            SqlCommand cmd = new SqlCommand(str, con);
+
+            try
+            {
+                con.Open();
+                SqlDataAdapter ad = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                ad.Fill(ds);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
+                cmd.Dispose();
+                con.Dispose();
+            }
+
+
+        }
+    }
+}
