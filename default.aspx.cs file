@@ -1,0 +1,56 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using samp;
+
+
+public partial class _Default : System.Web.UI.Page
+{
+    Logic obj = new Logic();
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        Label1.Visible = false;
+
+        DataSet ds = obj.getdataset("select * from students");
+        GridView2.DataSource = ds;
+        GridView2.DataBind();
+    }
+
+
+    protected void btnsrch_Click(object sender, EventArgs e)
+    {
+        obj.checkDataExist("select * from students where rollno=" + txtroll.Text);
+        
+        bool a = obj.checkDataExist("select * from students where rollno=" + txtroll.Text);
+
+        if(a)
+        {
+
+            GridView2.Visible = false;
+            DataSet ds = obj.getdataset("select * from students where rollno=" + txtroll.Text);
+            GridView1.DataSource = ds;
+            GridView1.DataBind();
+            Label1.Visible = false;
+            GridView1.Visible = true;
+
+
+        }
+        else
+        {
+            GridView2.Visible = false;
+            GridView1.Visible = false;
+            Label1.Visible = true;
+            Label1.Text = "No Student is having Roll No : " + txtroll.Text;
+        }
+    }
+
+
+      
+}
